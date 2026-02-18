@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Loading System</title>
+    <style>
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: 'Tahoma', sans-serif;
+            overflow: hidden;
+        }
+
+        /* --- หน้าที่ 1: Login Page --- */
+        #login-page {
+            /* ใส่ URL รูปสะพานของคุณที่นี่ */
+            background: url('https://scontent.fbkk12-2.fna.fbcdn.net/v/t39.30808-6/637866403_122117660961096634_7933757428336181660_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=13d280&_nc_ohc=MWBUqk8XvKcQ7kNvwFADx3g&_nc_oc=AdmubVgAEBk0uqfDrUt6n2_U7naoWClxVlYjw4c7pzkaiL6s9UfOUb2EMFkK2ZAs8_ZZU6N5mG3Hry-Ah4okn-WJ&_nc_zt=23&_nc_ht=scontent.fbkk12-2.fna&_nc_gid=1rfdv9N68NgKb4bJMDbe2Q&oh=00_AfsVgGDrSlILprcNbpxSn4g2EsHO6yVKYmtzoIhO3WL-TA&oe=699B92E2') no-repeat center center/cover;
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        .login-container {
+            /* แก้ไขตรงนี้: เอาพื้นหลังเบลอออก ให้เหลือแค่ความใส หรือโปร่งแสงธรรมดา */
+            background: transparent; 
+            padding: 40px; 
+            text-align: center; 
+            width: 380px;
+        }
+
+        .avatar-circle {
+            width: 110px; height: 110px; 
+            background: white;
+            border-radius: 50%; margin: 0 auto 40px;
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 60px;
+            border: 2px solid #000;
+        }
+
+        input {
+            width: 100%; padding: 15px; margin: 12px 0;
+            border-radius: 30px; 
+            border: 2px solid #000; /* ขอบเส้นสีดำชัดเจนตามรูป */
+            background: rgba(255, 255, 255, 0.9); /* สีขาวทึบเกือบ 100% ไม่เบลอ */
+            box-sizing: border-box; 
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .btn-login {
+            width: 100%; padding: 15px; margin-top: 25px;
+            border-radius: 30px; border: 1px solid #999;
+            /* ไล่เฉดสีปุ่มจากฟ้าไปม่วงตามรูปที่ 1 */
+            background: linear-gradient(to bottom, #c2e9fb 0%, #a1c4fd 100%);
+            cursor: pointer; font-weight: bold; font-size: 18px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        /* --- หน้าที่ 2: Loading Page --- */
+        #loading-page {
+            background: url('https://scontent.fbkk13-1.fna.fbcdn.net/v/t39.30808-6/636784040_122117660937096634_5653032259067942091_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=13d280&_nc_ohc=zrglg-Lz7vEQ7kNvwHKI3jz&_nc_oc=Adnm3Iq3LQxeKdah9PcCknZFmgp2pqf9P98O0RvxLBzuJTC9-HJ1L7T6yAcCErK8zgjeAzRmECgqA9uV-W4zqPoC&_nc_zt=23&_nc_ht=scontent.fbkk13-1.fna&_nc_gid=Jm_DN-nTIxO4IBqKXM1ZBw&oh=00_AfvEl_0eJ-ykVKJOLctpBBx23q_vZguqLLb7Zf90zY2Y2Q&oe=699BBCAE') no-repeat center center/cover;
+            width: 100%; height: 100%;
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        .loading-box {
+            /* พื้นหลังสีเหลืองอ่อนแบบโปร่งแสง แต่ไม่เบลอ */
+            background: rgba(255, 245, 157, 0.6); 
+            padding: 50px; border-radius: 20px; text-align: center; width: 450px;
+        }
+
+        .progress-container {
+            width: 100%; background: #eee;
+            border-radius: 25px; height: 35px; margin-top: 20px;
+            border: 2px solid #333; overflow: hidden; position: relative;
+        }
+
+        #progress-bar {
+            width: 0%; height: 100%;
+            background-color: #b19ff9; /* สีม่วงอ่อน */
+        }
+
+        #percent-text {
+            position: absolute; width: 100%; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); font-weight: bold; font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-page">
+        <div class="login-container">
+            <div class="avatar-circle">👤</div>
+            <input type="text" id="username" placeholder="ชื่อผู้ใช้">
+            <input type="password" id="p27012008" placeholder="รหัสผ่าน">
+            <button class="btn-login" onclick="startLogin()">เข้าสู่ระบบ</button>
+        </div>
+    </div>
+
+    <div id="loading-page">
+        <div class="loading-box">
+            <div style="background: #b19ff9; padding: 10px 50px; border-radius: 20px; display: inline-block; margin-bottom: 30px; border: 2px solid #333; font-weight: bold;">
+                เข้าสู่ระบบ
+            </div>
+            
+            <div class="progress-container">
+                <div id="progress-bar"></div>
+                <div id="percent-text">0%</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function startLogin() {
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('loading-page').style.display = 'flex';
+
+            let width = 0;
+            let progressBar = document.getElementById('progress-bar');
+            let percentText = document.getElementById('percent-text');
+
+            let interval = setInterval(function() {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    // เปลี่ยนลิงก์ปลายทางที่นี่
+                    window.location.href = "https://www.google.com"; 
+                } else {
+                    width++;
+                    progressBar.style.width = width + '%';
+                    percentText.innerHTML = width + '%';
+                }
+            }, 30); // ปรับความเร็วโหลด (ค่าน้อยยิ่งเร็ว)
+        }
+
+        // ดักจับปุ่ม Enter
+        document.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                const loginVisible = window.getComputedStyle(document.getElementById('login-page')).display;
+                if (loginVisible !== 'none') {
+                    startLogin();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
