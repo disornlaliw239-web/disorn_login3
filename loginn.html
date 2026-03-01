@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>หน้าลงชื่อเข้าสู่ระบบ - แบบตรวจสอบรหัส</title>
+    
+    <style>
+        /* --- CSS ส่วนการตกแต่ง --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tahoma', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f5f5f5;
+        }
+
+        .login-container {
+            display: flex;
+            width: 900px;
+            height: 550px;
+            background-color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .login-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .login-left h2 {
+            margin-bottom: 40px;
+            color: #000;
+        }
+
+        .input-group {
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #1a2a4e;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .login-btn {
+            margin-top: 30px;
+            padding: 10px 45px;
+            background-color: transparent;
+            border: 2px solid #1a2a4e;
+            border-radius: 12px;
+            color: #1a2a4e;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .login-btn:hover {
+            background-color: #1a2a4e;
+            color: white;
+        }
+
+        /* ฝั่งขวา (สีฟ้าเอียง) */
+        .login-right {
+            flex: 1.1;
+            background-color: #3b82f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            clip-path: polygon(18% 0, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        .icon-circle {
+            width: 220px;
+            height: 220px;
+            border: 2px solid #1a2a4e;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .icon-placeholder {
+            width: 100px;
+            height: 100px;
+            background-color: #333;
+            mask: url('https://cdn-icons-png.flaticon.com/512/33/33308.png') no-repeat center;
+            -webkit-mask: url('https://cdn-icons-png.flaticon.com/512/33/33308.png') no-repeat center;
+            mask-size: contain;
+            -webkit-mask-size: contain;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-left">
+            <h2>ลงชื่อเข้าสู่ระบบ</h2>
+            
+            <div class="input-group">
+                <input type="text" id="username" placeholder="ชื่อผู้ใช้งาน">
+                <input type="password" id="password" placeholder="รหัสผ่าน">
+            </div>
+
+            <button id="submitBtn" class="login-btn" onclick="checkLogin()">
+                เข้าสู่ระบบ
+            </button>
+        </div>
+
+        <div class="login-right">
+            <div class="icon-circle">
+                <div class="icon-placeholder"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ฟังก์ชันตรวจสอบการล็อกอิน
+        function checkLogin() {
+            // ดึงค่าจากช่อง Input
+            const userField = document.getElementById("username").value;
+            const passField = document.getElementById("password").value;
+
+            // กำหนดค่าที่ถูกต้อง (คุณเปลี่ยนตรงนี้ได้ตามต้องการ)
+            const correctUser = "kay";
+            const correctPass = "27012008";
+
+            // ตรวจสอบเงื่อนไข
+            if (userField === correctUser && passField === correctPass) {
+                // ถ้าถูก ให้ไปที่หน้าเว็บเป้าหมาย
+                alert("เข้าสู่ระบบสำเร็จ!");
+                window.location.href = 'https://disorn-glitch.github.io/disorn_menu/'; 
+            } else {
+                // ถ้าผิด ให้แจ้งเตือน
+                alert("ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่");
+                
+                // ล้างค่าในช่องรหัสผ่านเพื่อให้กรอกใหม่
+                document.getElementById("password").value = "";
+                document.getElementById("password").focus();
+            }
+        }
+
+        // รองรับการกดปุ่ม Enter
+        const inputs = [document.getElementById("username"), document.getElementById("password")];
+        inputs.forEach(input => {
+            input.addEventListener("keypress", function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    checkLogin(); // เรียกใช้ฟังก์ชันตรวจสอบ
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
